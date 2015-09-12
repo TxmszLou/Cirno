@@ -5,7 +5,4 @@ CONFIG -= qt
 
 SOURCES += main.cpp
 
-include(deployment.pri)
-qtcAddDeployment()
-
 QMAKE_CXXFLAGS += -std=c++0x
