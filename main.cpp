@@ -11,4 +11,4 @@ void execute(const expr & s)
         []( const std::string & str ){ std::cout << str; },
         []( const expr & l, const expr & r ){ execute( l ); execute( r ); } ) );
 }
-int main( ) { execute( print< >( )( "hello world" ) ); }
+int main( ) { execute( seq< >( )( std::make_tuple( print< >( )( "hello " ), print< >( )( "world!" ) ) ) ); }
