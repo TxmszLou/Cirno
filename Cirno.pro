@@ -5,4 +5,4 @@ CONFIG -= qt
 
 SOURCES += main.cpp
 
-QMAKE_CXXFLAGS += -std=c++0x
+QMAKE_CXXFLAGS += -std=c++1y
