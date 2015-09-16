@@ -6,3 +6,6 @@ CONFIG -= qt
 SOURCES += main.cpp
 
 QMAKE_CXXFLAGS += -std=c++1y
+
+HEADERS += \
+    cirno.hpp
