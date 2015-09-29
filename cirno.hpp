@@ -12,14 +12,9 @@ expr execute(const expr & s)
 {
     return
         s.match(
-            common::make_expansion(
-                []( const std::string & str ){ std::cout << str; return expr( UNIT< >( ) ); },
-                common::make_expansion(
-                    []( const expr & l, const expr & r ){ execute( l ); return execute( r ); },
-                    []( ){ return expr( UNIT< >( ) ); } ) ),
-            print( arg ),
-            seq( arg, arg ),
-            UNIT( uim ) );
+            with( print( arg ), []( const std::string & str ) { std::cout << str; return UNIT( ); } ),
+            with( seq( arg, arg ), []( const expr & l, const expr & r ) { execute( l ); return execute( r ); } ),
+            with( UNIT( uim ), []( ){ return UNIT( ); } ) );
 }
 #endif // CIRNO_HPP
 
