@@ -1,2 +1,2 @@
 #include <cirno.hpp>
-int main( ) { execute( seq( print( "hello " ), print( "world!" ) ) ); }
+int main( ) { execute( Seq( If( True( ), Print( "hello " ), Print( "Error" ) ), If( False( ), Print( "Error" ), Print( "world!" ) ) ) ); }
