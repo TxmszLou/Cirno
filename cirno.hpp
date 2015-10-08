@@ -4,18 +4,7 @@
 #include <iostream>
 #include <../algebraic_data_type/algebraic_data_type.hpp>
 using namespace algebraic_data_type;
-typedef
-algebraic_data_type
-<
-    recursive_indicator,
-    std::tuple< recursive_indicator, recursive_indicator >,
-    unit,
-    unit,
-    unit,
-    std::tuple< recursive_indicator, recursive_indicator, recursive_indicator >,
-    std::string
-> expr;
-DECLARE_CONSTRUCTORS( expr, (Print, Seq, Unit, True, False, If, String), x )
+DECLARE_ADT( expr, ((Print, recursive_indicator), (Seq, recursive_indicator, recursive_indicator), (Unit), (True), (False), (If, recursive_indicator, recursive_indicator, recursive_indicator), (String, std::string)), X )
 
 bool value_to_bool( const expr & e )
 { return e.match( with( True( uim ), []( ){ return true; } ), with( False( uim ), []( ){ return false; } ) ); }
