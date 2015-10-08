@@ -4,7 +4,12 @@
 #include <iostream>
 #include <../algebraic_data_type/algebraic_data_type.hpp>
 using namespace algebraic_data_type;
-DECLARE_ADT( expr, ((Print, recursive_indicator), (Seq, recursive_indicator, recursive_indicator), (Unit), (True), (False), (If, recursive_indicator, recursive_indicator, recursive_indicator), (String, std::string)), X )
+typedef recursive_indicator ri;
+
+DECLARE_ADT(
+    expr,
+    ((Print, ri), (Seq, ri, ri), (Unit), (True), (False), (When, ri, ri), (Unless, ri, ri), (If, ri, ri, ri), (String, std::string)),
+    X )
 
 bool value_to_bool( const expr & e )
 { return e.match( with( True( uim ), []( ){ return true; } ), with( False( uim ), []( ){ return false; } ) ); }
@@ -27,6 +32,14 @@ expr execute( const expr & e )
             with( Unit( uim ), []( ){ return Unit( ); } ),
             with( True( uim ), []( ){ return True( ); } ),
             with( False( uim ), []( ){ return False( ); } ),
+            with(
+                When( arg, arg ),
+                []( const expr & i, const expr & exp )
+                { return value_to_bool( execute( i ) ) ? execute( exp ) : Unit( ); } ),
+            with(
+                Unless( arg, arg ),
+                []( const expr & i, const expr & exp )
+                { return value_to_bool( execute( i ) ) ? Unit( ) : execute( exp ); } ),
             with(
                 If( arg, arg, arg ),
                 []( const expr & i, const expr & t, const expr & e )
