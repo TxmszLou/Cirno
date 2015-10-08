@@ -6,13 +6,24 @@
 using namespace algebraic_data_type;
 typedef recursive_indicator ri;
 
-DECLARE_ADT(
-    expr,
-    ((Print, ri), (Seq, ri, ri), (Unit), (True), (False), (When, ri, ri), (Unless, ri, ri), (If, ri, ri, ri), (String, std::string)),
-    X )
+DECLARE_ADT( expr,
+         ( (Unit)
+         , (True)
+         , (False)
+         , (Print,      ri)
+         , (Seq,        ri, ri)
+         , (When,       ri, ri)
+         , (Unless,     ri, ri)
+         , (If,         ri, ri, ri)
+         , (String,     std::string)
+         ), X )
 
 bool value_to_bool( const expr & e )
-{ return e.match( with( True( uim ), []( ){ return true; } ), with( False( uim ), []( ){ return false; } ) ); }
+{
+    return e.match( with( True( uim ),  []( ){ return true; } )
+                  , with( False( uim ), []( ){ return false; } ) );
+
+}
 
 std::string show( const expr & e )
 {
