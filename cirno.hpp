@@ -43,7 +43,7 @@ expr execute( const expr & e )
             with(
                 When( arg, arg ),
                 []( const expr & i, const expr & exp )
-                { return value_to_bool( execute( i ) ) ? execute( exp ) : execute( exp ); } ),
+                { return value_to_bool( execute( i ) ) ? execute( exp ) : Unit( ); } ),
             with(
                 Unless( arg, arg ),
                 []( const expr & i, const expr & exp )
