@@ -15,13 +15,7 @@ algebraic_data_type
     std::tuple< recursive_indicator, recursive_indicator, recursive_indicator >,
     std::string
 > expr;
-DECLARE_CONSTRUCTOR( expr, 0, Print, x )
-DECLARE_CONSTRUCTOR( expr, 1, Seq, x )
-DECLARE_CONSTRUCTOR( expr, 2, Unit, x )
-DECLARE_CONSTRUCTOR( expr, 3, True, x )
-DECLARE_CONSTRUCTOR( expr, 4, False, x )
-DECLARE_CONSTRUCTOR( expr, 5, If, x )
-DECLARE_CONSTRUCTOR( expr, 6, String, x )
+DECLARE_CONSTRUCTORS( expr, (Print, Seq, Unit, True, False, If, String), x )
 
 bool value_to_bool( const expr & e )
 { return e.match( with( True( uim ), []( ){ return true; } ), with( False( uim ), []( ){ return false; } ) ); }
