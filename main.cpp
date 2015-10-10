@@ -8,4 +8,5 @@ int main( )
         When( True( ), Print( String( "hello " ) ) ),
         Unless( False( ), Print( String( "world!\n" ) ) ) ) );
     execute( Print( Print( Seq( Print( True( ) ), Print( False( ) ) ) ) ) );
+    execute( Print( Concat( String( "4" ), Show( True( ) ) ) ) );
 }
