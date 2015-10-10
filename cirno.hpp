@@ -20,7 +20,8 @@ DECLARE_ADT( expr,
            (Concat,     ri, ri),
            (Set,        ri, ri),
            (Get,        ri),
-           (IsDefined,  ri)
+           (IsDefined,  ri),
+           (Scope,      ri)
          ), X )
 
 typedef std::map< std::string, expr > symbol_table;
@@ -45,6 +46,7 @@ std::string show( const expr & e )
                 with( String( arg ), []( const std::string & str ) { return str; } ) );
 }
 
+expr execute( std::tuple< symbol_table > st, const expr & e );
 expr execute( symbol_table & st, const expr & e )
 {
     return
@@ -75,7 +77,8 @@ expr execute( symbol_table & st, const expr & e )
                     auto it = st.insert( std::make_pair( value_to_string( execute( st, l ) ), r ) );
                     if ( ! it.second ) { it.first->second = r; }
                     return Unit( );
-                } ) );
+                } ),
+            with( Scope( arg ), [&]( const expr & e ) { return execute( std::make_tuple( symbol_table( st ) ), e ); } ) );
 }
 
 expr execute( std::tuple< symbol_table > st, const expr & e ) { return execute( std::get< 0 >( st ), e ); }

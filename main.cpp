@@ -17,5 +17,6 @@ int main( )
                   Seq( Set( Concat( String( "S" ), String( "omeVar" ) ), String( "345\n" ) ),
                        Print( Get( Concat( String( "Some" ), String( "Var" ) ) ) ) ) ) ) );
     execute( Seq(
-        If( True( ), Set( String( "hello " ), String( "hellos " ) ), Print( True( ) ) ), Print( Get( String( "hello " ) ) ) ) );
+        If( True( ), Set( String( "hello " ), String( "hellos \n" ) ), Print( True( ) ) ), Print( Get( String( "hello " ) ) ) ) );
+    execute( Seq( Scope( Set( String( "hi" ), True( ) ) ), Print( IsDefined( String( "hi" ) ) ) ) );
 }
