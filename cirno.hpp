@@ -14,7 +14,8 @@ DECLARE_ADT( expr,
            (Seq,        ri, ri),
            (If,         ri, ri, ri),
            (String,     std::string),
-           (Show,       ri)
+           (Show,       ri),
+           (Concat,     ri, ri)
          ), X )
 
 expr When( const expr & con, const expr & act ) { return If( con, act, Unit( ) ); }
@@ -24,8 +25,9 @@ bool value_to_bool( const expr & e )
 {
     return e.match( with( True( uim ),  []( ){ return true; } ),
                     with( False( uim ), []( ){ return false; } ) );
-
 }
+
+std::string value_to_string( const expr & e ) { return e.match( with( String( arg ), []( const std::string & str ){ return str; } ) ); }
 
 std::string show( const expr & e )
 {
@@ -50,7 +52,10 @@ expr execute( const expr & e )
                 []( const expr & i, const expr & t, const expr & e )
                 { return value_to_bool( execute( i ) ) ? execute( t ) : execute( e ); } ),
             with( String( arg ), []( const std::string & str ) { return String( str ); } ),
-            with( Show( arg ), []( const expr & e ) { return String( show( execute( e ) ) ); } ) );
+            with( Show( arg ), []( const expr & e ) { return String( show( execute( e ) ) ); } ),
+            with(
+                Concat( arg, arg ),
+                []( const expr & l, const expr & r ) { return String( value_to_string( execute( l ) ) + value_to_string( execute( r ) ) ); } ) );
 }
 #endif // CIRNO_HPP
 
