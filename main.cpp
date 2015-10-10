@@ -19,4 +19,6 @@ int main( )
     execute( Seq(
         If( True( ), Set( String( "hello " ), String( "hellos \n" ) ), Print( True( ) ) ), Print( Get( String( "hello " ) ) ) ) );
     execute( Seq( Scope( Set( String( "hi" ), True( ) ) ), Print( IsDefined( String( "hi" ) ) ) ) );
+    assert(
+        value_to_bool( execute( Seq( Seq( Set( String( "var" ), False( ) ), Scope( Set( String( "var" ), True( ) ) ) ), Get( String( "var" ) ) ) ) ) );
 }
