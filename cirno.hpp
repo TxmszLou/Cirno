@@ -7,21 +7,22 @@ using namespace algebraic_data_type;
 typedef recursive_indicator ri;
 
 DECLARE_ADT( expr,
-         ( (Unit)
-         , (True)
-         , (False)
-         , (Print,      ri)
-         , (Seq,        ri, ri)
-         , (When,       ri, ri)
-         , (Unless,     ri, ri)
-         , (If,         ri, ri, ri)
-         , (String,     std::string)
+         ( (Unit),
+           (True),
+           (False),
+           (Print,      ri),
+           (Seq,        ri, ri),
+           (When,       ri, ri),
+           (Unless,     ri, ri),
+           (If,         ri, ri, ri),
+           (String,     std::string),
+           (Show,       ri)
          ), X )
 
 bool value_to_bool( const expr & e )
 {
-    return e.match( with( True( uim ),  []( ){ return true; } )
-                  , with( False( uim ), []( ){ return false; } ) );
+    return e.match( with( True( uim ),  []( ){ return true; } ),
+                    with( False( uim ), []( ){ return false; } ) );
 
 }
 
@@ -55,7 +56,8 @@ expr execute( const expr & e )
                 If( arg, arg, arg ),
                 []( const expr & i, const expr & t, const expr & e )
                 { return value_to_bool( execute( i ) ) ? execute( t ) : execute( e ); } ),
-            with( String( arg ), []( const std::string & str ) { return String( str ); } ));
+            with( String( arg ), []( const std::string & str ) { return String( str ); } ),
+            with( Show( arg ), []( const expr & e ) { return String( show( execute( e ) ) ); } ) );
 }
 #endif // CIRNO_HPP
 
