@@ -14,6 +14,8 @@ int main( )
     execute(
         Seq( Set( String( "SomeVar" ), String( "12" ) ),
              Seq( Print( Get( String( "SomeVar" ) ) ),
-                  Seq( Set( Concat( String( "S" ), String( "omeVar" ) ), String( "345" ) ),
+                  Seq( Set( Concat( String( "S" ), String( "omeVar" ) ), String( "345\n" ) ),
                        Print( Get( Concat( String( "Some" ), String( "Var" ) ) ) ) ) ) ) );
+    execute( Seq(
+        If( True( ), Set( String( "hello " ), String( "hellos " ) ), Print( True( ) ) ), Print( Get( String( "hello " ) ) ) ) );
 }
