@@ -12,12 +12,13 @@ DECLARE_ADT( expr,
            (False),
            (Print,      ri),
            (Seq,        ri, ri),
-           (When,       ri, ri),
-           (Unless,     ri, ri),
            (If,         ri, ri, ri),
            (String,     std::string),
            (Show,       ri)
          ), X )
+
+expr When( const expr & con, const expr & act ) { return If( con, act, Unit( ) ); }
+expr Unless( const expr & con, const expr & act ) { return If( con, Unit( ), act ); }
 
 bool value_to_bool( const expr & e )
 {
@@ -44,14 +45,6 @@ expr execute( const expr & e )
             with( Unit( uim ), []( ){ return Unit( ); } ),
             with( True( uim ), []( ){ return True( ); } ),
             with( False( uim ), []( ){ return False( ); } ),
-            with(
-                When( arg, arg ),
-                []( const expr & i, const expr & exp )
-                { return value_to_bool( execute( i ) ) ? execute( exp ) : Unit( ); } ),
-            with(
-                Unless( arg, arg ),
-                []( const expr & i, const expr & exp )
-                { return value_to_bool( execute( i ) ) ? Unit( ) : execute( exp ); } ),
             with(
                 If( arg, arg, arg ),
                 []( const expr & i, const expr & t, const expr & e )
