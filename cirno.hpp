@@ -23,7 +23,8 @@ DECLARE_ADT( expr,
            (Get,        ri),
            (IsDefined,  ri),
            (Define,     ri, ri),
-           (Scope,      ri)
+           (Scope,      ri),
+           (While,      ri, ri)
          ), X )
 
 typedef std::map< std::string, expr > symbol_table;
@@ -105,10 +106,17 @@ expr execute( environment & env, const expr & e )
                     env.set( value_to_string( execute( env, l ) ), r );
                     return Unit( );
                 } ),
-            with( Scope( arg ), [&]( const expr & e ) { return execute( std::make_tuple( environment{ symbol_table{ }, { env } } ), e ); } ) );
+            with( Scope( arg ), [&]( const expr & e ) { return execute( std::make_tuple( environment{ symbol_table{ }, { env } } ), e ); } ),
+            with(
+                While( arg, arg ),
+                [&]( const expr & b, const expr & act )
+                {
+                    while ( value_to_bool( execute( env, b ) ) ) { execute( env, act ); }
+                    return Unit( );
+                } ) );
 }
 
-expr execute(std::tuple< environment > st, const expr & e ) { return execute( std::get< 0 >( st ), e ); }
+expr execute( std::tuple< environment > st, const expr & e ) { return execute( std::get< 0 >( st ), e ); }
 expr execute( const expr & e ) { return execute( std::make_tuple( environment{ } ), e ); }
 
 #endif // CIRNO_HPP

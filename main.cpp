@@ -21,4 +21,12 @@ int main( )
     execute( Seq( Scope( Set( String( "hi" ), True( ) ) ), Print( IsDefined( String( "hi" ) ) ) ) );
     assert(
         value_to_bool( execute( Seq( Seq( Set( String( "var" ), False( ) ), Scope( Set( String( "var" ), True( ) ) ) ), Get( String( "var" ) ) ) ) ) );
+    execute(
+        Seq(
+            Seq( Set( String( "b1" ), True( ) ), Set( String( "b2" ), True( ) ) ),
+            While(
+                If( Get( String( "b1" ) ), True( ), Get( String( "b2" ) ) ),
+                If( Get( String( "b1" ) ),
+                    Seq( Set( String( "b1" ), False( ) ), Print( String( "Hello" ) ) ),
+                    Seq( Set( String( "b2" ), False( ) ), Print( String( "World" ) ) ) ) ) ) );
 }
