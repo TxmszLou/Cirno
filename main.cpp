@@ -4,7 +4,7 @@ int main( )
 {
     execute( Seq(
         If( True( ), Print( String( "hello " ) ), Print( True( ) ) ),
-        If( False( ), Print( Unit( ) ), Print( String( "world!\n" ) ) ) ) );
+        If( Or( False( ), Neg( True( ) ) ), Print( Unit( ) ), Print( String( "world!\n" ) ) ) ) );
     execute( Seq(
         When( True( ), Print( String( "hello " ) ) ),
         Unless( False( ), Print( String( "world!\n" ) ) ) ) );
@@ -25,7 +25,7 @@ int main( )
         Seq(
             Seq( Set( String( "b1" ), True( ) ), Set( String( "b2" ), True( ) ) ),
             While(
-                If( Get( String( "b1" ) ), True( ), Get( String( "b2" ) ) ),
+                Or( Get( String( "b1" ) ), Get( String( "b2" ) ) ),
                 If( Get( String( "b1" ) ),
                     Seq( Set( String( "b1" ), False( ) ), Print( String( "Hello" ) ) ),
                     Seq( Set( String( "b2" ), False( ) ), Print( String( "World" ) ) ) ) ) ) );

@@ -52,6 +52,9 @@ struct environment
     void set( const std::string & str, const expr & e ) { if ( ! assign( str, e ) ) { st.insert( std::make_pair( str, e ) ); } }
 };
 
+expr And( const expr & l, const expr & r ) { return If( l, r, False( ) ); }
+expr Or( const expr & l, const expr & r ) { return If( l, True( ), r ); }
+expr Neg( const expr & e ) { return If( e, False( ), True( ) ); }
 expr When( const expr & con, const expr & act ) { return If( con, act, Unit( ) ); }
 expr Unless( const expr & con, const expr & act ) { return If( con, Unit( ), act ); }
 
