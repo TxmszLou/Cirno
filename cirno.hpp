@@ -24,8 +24,9 @@ DECLARE_ADT( expr,
            (IsDefined,  ri),
            (Define,     ri, ri),
            (Scope,      ri),
-           (While,      ri, ri)
-           (Ref,        std::reference_wrapper< ri >)
+           (While,      ri, ri),
+           (Ref,        std::reference_wrapper< ri >),
+           (RefToValue, ri)
          ), X )
 
 typedef std::map< std::string, expr > symbol_table;
@@ -33,17 +34,20 @@ typedef std::map< std::string, expr > symbol_table;
 using std::experimental::optional;
 using std::reference_wrapper;
 
+template< typename T >
+using orw = optional< reference_wrapper< T > >;
+
 struct environment
 {
     symbol_table st;
-    optional< reference_wrapper< environment > > parent;
-    optional< reference_wrapper< expr > > get( const std::string & str )
+    orw< environment > parent;
+    orw< expr > get( const std::string & str )
     {
         auto it = st.find( str );
         return
             it != st.end( ) ?
             reference_wrapper< expr >{ it->second } :
-            ( parent ? parent->get( ).get( str ) : optional< reference_wrapper< expr > >{ } );
+            ( parent ? parent->get( ).get( str ) : orw< expr >{ } );
     }
     void define( const std::string & str, const expr & e )
     {
@@ -81,6 +85,7 @@ std::string show( const expr & e )
                 with( String( arg ), []( const std::string & str ) { return str; } ) );
 }
 
+expr strip_ref( const expr & e ) { return e.match( with( Ref( arg ), []( const reference_wrapper< expr > & v ) { return v.get( ); } ) ); }
 expr execute( std::tuple< environment > st, const expr & e );
 expr execute( environment & env, const expr & e )
 {
@@ -122,7 +127,9 @@ expr execute( environment & env, const expr & e )
                 {
                     while ( value_to_bool( execute( env, b ) ) ) { execute( env, act ); }
                     return Unit( );
-                } ) );
+                } ),
+            //with( Ref( arg ), [&]( const reference_wrapper< expr > & r ) { return Ref( r ); } ),
+            with( RefToValue( arg ), [&]( const expr & e ){ return strip_ref( execute( env, e ) ); } ) );
 }
 
 expr execute( std::tuple< environment > st, const expr & e ) { return execute( std::get< 0 >( st ), e ); }
