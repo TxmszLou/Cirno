@@ -29,15 +29,20 @@ DECLARE_ADT( expr,
 
 typedef std::map< std::string, expr > symbol_table;
 
+using std::experimental::optional;
+using std::reference_wrapper;
+
 struct environment
 {
     symbol_table st;
-    std::experimental::optional< std::reference_wrapper< environment > > parent;
-    typedef std::experimental::optional< expr > value;
-    value get( const std::string & str )
+    optional< reference_wrapper< environment > > parent;
+    optional< reference_wrapper< expr > > get( const std::string & str )
     {
         auto it = st.find( str );
-        return it != st.end( ) ? it->second : ( parent ? parent->get( ).get( str ) : value{ } );
+        return
+            it != st.end( ) ?
+            reference_wrapper< expr >{ it->second } :
+            ( parent ? parent->get( ).get( str ) : optional< reference_wrapper< expr > >{ } );
     }
     void define( const std::string & str, const expr & e )
     {
