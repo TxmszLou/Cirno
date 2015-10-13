@@ -25,6 +25,7 @@ DECLARE_ADT( expr,
            (Define,     ri, ri),
            (Scope,      ri),
            (While,      ri, ri)
+           (Ref,        std::reference_wrapper< ri >)
          ), X )
 
 typedef std::map< std::string, expr > symbol_table;
