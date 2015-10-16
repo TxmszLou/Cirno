@@ -24,9 +24,7 @@ DECLARE_ADT( expr,
            (IsDefined,  ri),
            (Define,     ri, ri),
            (Scope,      ri),
-           (While,      ri, ri),
-           (Ref,        std::reference_wrapper< ri >),
-           (RefToValue, ri)
+           (While,      ri, ri)
          ), X )
 
 typedef std::map< std::string, expr > symbol_table;
@@ -85,7 +83,6 @@ std::string show( const expr & e )
                 with( String( arg ), []( const std::string & str ) { return str; } ) );
 }
 
-expr strip_ref( const expr & e ) { return e.match( with( Ref( arg ), []( const reference_wrapper< expr > & v ) { return v.get( ); } ) ); }
 expr execute( std::tuple< environment > st, const expr & e );
 expr execute( environment & env, const expr & e )
 {
@@ -127,9 +124,7 @@ expr execute( environment & env, const expr & e )
                 {
                     while ( value_to_bool( execute( env, b ) ) ) { execute( env, act ); }
                     return Unit( );
-                } ),
-            //with( Ref( arg ), [&]( const reference_wrapper< expr > & r ) { return Ref( r ); } ),
-            with( RefToValue( arg ), [&]( const expr & e ){ return strip_ref( execute( env, e ) ); } ) );
+                } ) );
 }
 
 expr execute( std::tuple< environment > st, const expr & e ) { return execute( std::get< 0 >( st ), e ); }
