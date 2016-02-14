@@ -28,3 +28,6 @@
 *.app
 *.pro.user
 *.pri
+
+*.lock
+target
