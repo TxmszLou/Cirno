@@ -1,0 +1,6 @@
+[package]
+name = "cirno"
+version = "0.1.0"
+authors = ["Marisa Kirisame <lolisa@marisa.moe>"]
+
+[dependencies]
