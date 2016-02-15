@@ -6,7 +6,8 @@ enum Term
     TBool(bool),
     TCon(Box<Term>, Box<Term>, Box<Term>),
     TPrintLn(Box<Term>),
-    TUnit
+    TUnit,
+    TSeq(Box<Term>, Box<Term>)
 }
 use Term::*;
 fn eval(t : Term) -> Term
@@ -26,7 +27,8 @@ fn eval(t : Term) -> Term
             match eval(s) {
                 TString(x) => { println!("{}", x); TUnit },
                 _ => unreachable!()
-            }
+            },
+        TSeq(box l, box r) => { eval(l); eval(r) }
     }
 }
 #[test]
