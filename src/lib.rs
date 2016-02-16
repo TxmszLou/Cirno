@@ -7,7 +7,8 @@ enum Term
     TCon(Box<Term>, Box<Term>, Box<Term>),
     TPrintLn(Box<Term>),
     TUnit,
-    TSeq(Box<Term>, Box<Term>)
+    TSeq(Box<Term>, Box<Term>),
+    TShow(Box<Term>)
 }
 use Term::*;
 fn eval(t : Term) -> Term
@@ -28,7 +29,15 @@ fn eval(t : Term) -> Term
                 TString(x) => { println!("{}", x); TUnit },
                 _ => unreachable!()
             },
-        TSeq(box l, box r) => { eval(l); eval(r) }
+        TSeq(box l, box r) => { eval(l); eval(r) },
+        TShow(box x) =>
+            match eval(x) {
+                TString(x) => TString(x),
+                TBool(true) => TString(String::from("true")),
+                TBool(false) => TString(String::from("false")),
+                TUnit => TString(String::from("unit")),
+                _ => unreachable!()
+            }
     }
 }
 #[test]
