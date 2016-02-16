@@ -5,6 +5,8 @@ enum Term
     TString(String),
     TBool(bool),
     TCon(Box<Term>, Box<Term>, Box<Term>),
+    TWhen(Box<Term>, Box<Term>),
+    TUnless(Box<Term>, Box<Term>),
     TPrintLn(Box<Term>),
     TUnit,
     TSeq(Box<Term>, Box<Term>),
@@ -37,7 +39,9 @@ fn eval(t : Term) -> Term
                 TBool(false) => TString(String::from("false")),
                 TUnit => TString(String::from("unit")),
                 _ => unreachable!()
-            }
+            },
+        TWhen(c, act) => eval(TCon(c, act, box TUnit)),
+        TUnless(c, act) => eval(TCon(c, box TUnit, act))
     }
 }
 #[test]
