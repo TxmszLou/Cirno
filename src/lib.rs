@@ -8,6 +8,7 @@ enum Term
     TWhen(Box<Term>, Box<Term>),
     TUnless(Box<Term>, Box<Term>),
     TPrintLn(Box<Term>),
+    TPrint(Box<Term>),
     TUnit,
     TSeq(Box<Term>, Box<Term>),
     TShow(Box<Term>),
@@ -32,6 +33,11 @@ fn eval(t : Term) -> Term
         TPrintLn(box s) =>
             match eval(s) {
                 TString(x) => { println!("{}", x); TUnit },
+                _ => unreachable!()
+            },
+        TPrint(box s) =>
+            match eval(s) {
+                TString(x) => { print!("{}", x); TUnit },
                 _ => unreachable!()
             },
         TSeq(box l, box r) => { eval(l); eval(r) },
