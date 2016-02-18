@@ -4,6 +4,7 @@ enum Term
 {
     TString(String),
     TBool(bool),
+    TConcat(Box<Term>, Box<Term>),
     TCon(Box<Term>, Box<Term>, Box<Term>),
     TWhen(Box<Term>, Box<Term>),
     TUnless(Box<Term>, Box<Term>),
@@ -39,6 +40,11 @@ fn eval(t : Term) -> Term
         TPrint(box s) =>
             match eval(s) {
                 TString(x) => { print!("{}", x); TUnit },
+                _ => unreachable!()
+            },
+        TConcat(box l, box r) =>
+            match (eval(l), eval(r)) {
+                (TString(ls), TString(rs)) => TString(ls + &rs),
                 _ => unreachable!()
             },
         TSeq(box l, box r) => { eval(l); eval(r) },
