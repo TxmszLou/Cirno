@@ -9,7 +9,6 @@ enum Term
     TWhen(Box<Term>, Box<Term>),
     TUnless(Box<Term>, Box<Term>),
     TPrintLn(Box<Term>),
-    TPrint(Box<Term>),
     TUnit,
     TSeq(Box<Term>, Box<Term>),
     TShow(Box<Term>),
@@ -19,58 +18,73 @@ enum Term
     TWhile(Box<Term>, Box<Term>)
 }
 use Term::*;
-fn eval(t : Term) -> Term
+trait VM {
+    fn println(&mut self, &String);
+}
+fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
 {
-    match t
+    match tr
     {
-        TString(_) => t,
-        TBool(_) => t,
-        TUnit => t,
-        TCon(box i, box t, box e) =>
-            match eval(i) {
-                TBool(true) => eval(t),
-                TBool(false) => eval(e),
+        &TString(_) => tr.clone(),
+        &TBool(_) => tr.clone(),
+        &TUnit => tr.clone(),
+        &TCon(box ref i, box ref t, box ref e) =>
+            match eval(env, &i) {
+                TBool(true) => eval(env, t),
+                TBool(false) => eval(env, e),
                 _ => unreachable!()
             },
-        TPrintLn(box s) =>
-            match eval(s) {
-                TString(x) => { println!("{}", x); TUnit },
+        &TPrintLn(box ref s) =>
+            match eval(env, &s) {
+                TString(x) => { env.println(&x); TUnit },
                 _ => unreachable!()
             },
-        TPrint(box s) =>
-            match eval(s) {
-                TString(x) => { print!("{}", x); TUnit },
-                _ => unreachable!()
-            },
-        TConcat(box l, box r) =>
-            match (eval(l), eval(r)) {
+        &TConcat(box ref l, box ref r) =>
+            match (eval(env, l), eval(env, r)) {
                 (TString(ls), TString(rs)) => TString(ls + &rs),
                 _ => unreachable!()
             },
-        TSeq(box l, box r) => { eval(l); eval(r) },
-        TShow(box x) =>
-            match eval(x) {
+        &TSeq(box ref l, box ref r) => { eval(env, l); eval(env, r) },
+        &TShow(box ref x) =>
+            match eval(env, x) {
                 TString(x) => TString(x),
                 TBool(true) => TString(String::from("true")),
                 TBool(false) => TString(String::from("false")),
                 TUnit => TString(String::from("unit")),
                 _ => unreachable!()
             },
-        TWhen(c, act) => eval(TCon(c, act, box TUnit)),
-        TUnless(c, act) => eval(TCon(c, box TUnit, act)),
-        TAnd(l, r) => eval(TCon(l, r, box TBool(false))),
-        TOr(l, r) => eval(TCon(l, box TBool(true), r)),
-        TNot(c) => eval(TCon(c, box TBool(false), box TBool(true))),
-        TWhile(c, act) =>
-            eval(TWhen(c.clone(),
-                       box TSeq(act.clone(), box TWhile(c, act))))
+        &TWhen(box ref c, box ref act) =>
+            eval(env, &TCon(box c.clone(), box act.clone(), box TUnit)),
+        &TUnless(box ref c, box ref act) =>
+            eval(env, &TCon(box c.clone(), box TUnit, box act.clone())),
+        &TAnd(box ref l, box ref r) =>
+            eval(env, &TCon(box l.clone(), box r.clone(), box TBool(false))),
+        &TOr(box ref l, box ref r) =>
+            eval(env, &TCon(box l.clone(), box TBool(true), box r.clone())),
+        &TNot(box ref c) =>
+            eval(env, &TCon(box c.clone(), box TBool(false), box TBool(true))),
+        &TWhile(box ref c, box ref act) =>
+            eval(env,
+                 &TWhen(box c.clone(),
+                        box TSeq(box act.clone(),
+                                 box TWhile(box c.clone(), box act.clone() ))))
+    }
+}
+use std::collections::LinkedList;
+struct TestVM {
+    output : LinkedList<String>
+}
+impl VM for TestVM {
+    fn println(&mut self, x : &String) {
+        self.output.push_back(x.clone())
     }
 }
 #[test]
 fn test_conditional(){
-    assert_eq!(eval(TCon(
-        box TBool(true),
-        box TString(String::from("Hello")),
-        box TString(String::from("World")))),
+    assert_eq!(eval(&mut TestVM { output : LinkedList::new() },
+        &TCon(
+            box TBool(true),
+            box TString(String::from("Hello")),
+            box TString(String::from("World")))),
                TString(String::from("Hello")))
 }
