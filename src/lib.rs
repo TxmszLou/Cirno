@@ -74,17 +74,31 @@ use std::collections::LinkedList;
 struct TestVM {
     output : LinkedList<String>
 }
+impl TestVM {
+    fn new() -> TestVM {
+        TestVM { output : LinkedList::new() }
+    }
+}
 impl VM for TestVM {
     fn println(&mut self, x : &String) {
         self.output.push_back(x.clone())
     }
 }
+
+struct DefaultVM;
+
+impl VM for DefaultVM {
+    fn println(&mut self, x : &String) {
+        println!("{}", x)
+    }
+}
+
 #[test]
 fn test_conditional(){
-    assert_eq!(eval(&mut TestVM { output : LinkedList::new() },
-        &TCon(
-            box TBool(true),
-            box TString(String::from("Hello")),
-            box TString(String::from("World")))),
-               TString(String::from("Hello")))
+    assert_eq!(
+        eval(&mut TestVM::new(),
+             &TCon(box TBool(true),
+                   box TString(String::from("Hello")),
+                   box TString(String::from("World")))),
+        TString(String::from("Hello")))
 }
