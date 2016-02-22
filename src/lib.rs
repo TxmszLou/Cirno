@@ -1,6 +1,6 @@
 #![feature(box_syntax, box_patterns)]
 #[derive(PartialEq, PartialOrd, Debug, Clone)]
-enum Term
+pub enum Term
 {
     TString(String),
     TBool(bool),
@@ -15,19 +15,38 @@ enum Term
     TAnd(Box<Term>, Box<Term>),
     TOr(Box<Term>, Box<Term>),
     TNot(Box<Term>),
-    TWhile(Box<Term>, Box<Term>)
+    TWhile(Box<Term>, Box<Term>),
+    TS,
+    TK,
+    TI,
+    TApp(Box<Term>, Box<Term>)
 }
 use Term::*;
-trait VM {
+pub trait VM {
     fn println(&mut self, &String);
 }
-fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
+pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
 {
     match tr
     {
         &TString(_) => tr.clone(),
         &TBool(_) => tr.clone(),
         &TUnit => tr.clone(),
+        &TS => tr.clone(),
+        &TK => tr.clone(),
+        &TI => tr.clone(),
+        &TApp(box ref l, box ref r) =>
+            match (eval(env, &l), eval(env, &r)) {
+                (TApp(box TS, box TApp(x, y)), z) =>
+                    eval(env,
+                         &TApp(box TApp(x, box z.clone()), box TApp(y, box z))),
+                (TK, x) => TApp(box TK, box x),
+                (TI, x) => x,
+                (TApp(box TK, box x), _) => x,
+                (TS, x) => TApp(box TS, box x),
+                (TApp(box TS, x), y) => TApp(box TApp(box TS, x), box y),
+                _ => unreachable!()
+            },
         &TCon(box ref i, box ref t, box ref e) =>
             match eval(env, &i) {
                 TBool(true) => eval(env, t),
@@ -71,11 +90,11 @@ fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
     }
 }
 use std::collections::LinkedList;
-struct TestVM {
+pub struct TestVM {
     output : LinkedList<String>
 }
 impl TestVM {
-    fn new() -> TestVM {
+    pub fn new() -> TestVM {
         TestVM { output : LinkedList::new() }
     }
 }
@@ -85,7 +104,7 @@ impl VM for TestVM {
     }
 }
 
-struct DefaultVM;
+pub struct DefaultVM;
 
 impl VM for DefaultVM {
     fn println(&mut self, x : &String) {
