@@ -52,7 +52,7 @@ pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
                 (TApp(box TK, box x), _) => x,
                 (TI, x) => x,
                 (x, y) => {
-                    assert!(is_value(&x) && is_value(&y));
+                    debug_assert!(is_value(&x) && is_value(&y));
                     TApp(box x, box y) },
             },
         &TCon(box ref i, box ref t, box ref e) =>
