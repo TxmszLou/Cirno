@@ -25,27 +25,35 @@ use Term::*;
 pub trait VM {
     fn println(&mut self, &String);
 }
+
+pub fn is_value(tr : & Term) -> bool
+{
+    match tr
+    {
+        &TS | &TK | &TI | &TString(_) | &TBool(_) | &TUnit => true,
+        &TApp(box TK, box ref x) => is_value(x),
+        &TApp(box TS, box ref x) => is_value(x),
+        &TApp(box TApp(box TS, box ref l), box ref r) =>
+            is_value(l) && is_value(r),
+        _ => false
+    }
+}
+
 pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
 {
     match tr
     {
-        &TString(_) => tr.clone(),
-        &TBool(_) => tr.clone(),
-        &TUnit => tr.clone(),
-        &TS => tr.clone(),
-        &TK => tr.clone(),
-        &TI => tr.clone(),
+        _ if is_value(tr) => tr.clone(),
         &TApp(box ref l, box ref r) =>
             match (eval(env, &l), eval(env, &r)) {
                 (TApp(box TS, box TApp(x, y)), z) =>
                     eval(env,
                          &TApp(box TApp(x, box z.clone()), box TApp(y, box z))),
-                (TK, x) => TApp(box TK, box x),
-                (TI, x) => x,
                 (TApp(box TK, box x), _) => x,
-                (TS, x) => TApp(box TS, box x),
-                (TApp(box TS, x), y) => TApp(box TApp(box TS, x), box y),
-                _ => unreachable!()
+                (TI, x) => x,
+                (x, y) => {
+                    assert!(is_value(&x) && is_value(&y));
+                    TApp(box x, box y) },
             },
         &TCon(box ref i, box ref t, box ref e) =>
             match eval(env, &i) {
@@ -86,7 +94,8 @@ pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
             eval(env,
                  &TWhen(box c.clone(),
                         box TSeq(box act.clone(),
-                                 box TWhile(box c.clone(), box act.clone() ))))
+                                 box TWhile(box c.clone(), box act.clone() )))),
+        _ => unreachable!()
     }
 }
 use std::collections::LinkedList;
