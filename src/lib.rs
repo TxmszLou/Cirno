@@ -19,7 +19,12 @@ pub enum Term
     TS,
     TK,
     TI,
-    TApp(Box<Term>, Box<Term>)
+    TApp(Box<Term>, Box<Term>),
+    TNil,
+    TCons(Box<Term>, Box<Term>),
+    TIsNil(Box<Term>),
+    TFirst(Box<Term>),
+    TSecond(Box<Term>)
 }
 use Term::*;
 pub trait VM {
@@ -35,6 +40,8 @@ pub fn is_value(tr : & Term) -> bool
         &TApp(box TS, box ref x) => is_value(x),
         &TApp(box TApp(box TS, box ref l), box ref r) =>
             is_value(l) && is_value(r),
+        &TNil => true,
+        &TCons(box ref l, box ref r) => is_value(l) && is_value(r),
         _ => false
     }
 }
@@ -95,6 +102,21 @@ pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
                  &TWhen(box c.clone(),
                         box TSeq(box act.clone(),
                                  box TWhile(box c.clone(), box act.clone() )))),
+        &TIsNil(box ref l) =>
+            match eval(env, &l) {
+                TNil => TBool(true),
+                _ => TBool(false)
+            },
+        &TFirst(box ref x) =>
+            match eval(env, &x) {
+                TCons(box ref l, _) => l.clone(),
+                _ => unreachable!()
+            },
+        &TSecond(box ref x) =>
+            match eval(env, &x) {
+                TCons(_, box ref r) => r.clone(),
+                _ => unreachable!()
+            },
         _ => unreachable!()
     }
 }
