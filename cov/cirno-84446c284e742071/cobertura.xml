@@ -1,0 +1,97 @@
+<?xml version="1.0" ?>
+<!DOCTYPE coverage SYSTEM 'http://cobertura.sourceforge.net/xml/coverage-03.dtd'>
+<coverage line-rate="0.000" version="1.9" timestamp="1456690373">
+	<sources>
+		<source>/home/marisa/Work/cirno/src/lib.rs/</source>
+	</sources>
+	<packages>
+		<package name="cirno_84446c284e742071" line-rate="0.000" branch-rate="1.0" complexity="1.0">
+			<classes>
+				<class name="lib_rs" filename="/home/marisa/Work/cirno/src/lib.rs" line-rate="0.000">
+					<lines>
+						<line number="1" hits="0"/>
+						<line number="2" hits="0"/>
+						<line number="5" hits="0"/>
+						<line number="6" hits="0"/>
+						<line number="7" hits="0"/>
+						<line number="8" hits="0"/>
+						<line number="9" hits="0"/>
+						<line number="10" hits="0"/>
+						<line number="11" hits="0"/>
+						<line number="13" hits="0"/>
+						<line number="14" hits="0"/>
+						<line number="15" hits="0"/>
+						<line number="16" hits="0"/>
+						<line number="17" hits="0"/>
+						<line number="18" hits="0"/>
+						<line number="22" hits="0"/>
+						<line number="24" hits="0"/>
+						<line number="25" hits="0"/>
+						<line number="26" hits="0"/>
+						<line number="27" hits="0"/>
+						<line number="29" hits="0"/>
+						<line number="30" hits="0"/>
+						<line number="31" hits="0"/>
+						<line number="39" hits="0"/>
+						<line number="42" hits="0"/>
+						<line number="43" hits="0"/>
+						<line number="44" hits="0"/>
+						<line number="46" hits="0"/>
+						<line number="47" hits="0"/>
+						<line number="48" hits="0"/>
+						<line number="49" hits="0"/>
+						<line number="50" hits="0"/>
+						<line number="51" hits="0"/>
+						<line number="53" hits="0"/>
+						<line number="56" hits="0"/>
+						<line number="59" hits="0"/>
+						<line number="61" hits="0"/>
+						<line number="62" hits="0"/>
+						<line number="63" hits="0"/>
+						<line number="64" hits="0"/>
+						<line number="67" hits="0"/>
+						<line number="69" hits="0"/>
+						<line number="72" hits="0"/>
+						<line number="73" hits="0"/>
+						<line number="74" hits="0"/>
+						<line number="78" hits="0"/>
+						<line number="79" hits="0"/>
+						<line number="83" hits="0"/>
+						<line number="84" hits="0"/>
+						<line number="87" hits="0"/>
+						<line number="89" hits="0"/>
+						<line number="91" hits="0"/>
+						<line number="92" hits="0"/>
+						<line number="93" hits="0"/>
+						<line number="97" hits="0"/>
+						<line number="99" hits="0"/>
+						<line number="101" hits="0"/>
+						<line number="103" hits="0"/>
+						<line number="105" hits="0"/>
+						<line number="107" hits="0"/>
+						<line number="108" hits="0"/>
+						<line number="109" hits="0"/>
+						<line number="110" hits="0"/>
+						<line number="112" hits="0"/>
+						<line number="117" hits="0"/>
+						<line number="118" hits="0"/>
+						<line number="122" hits="0"/>
+						<line number="123" hits="0"/>
+						<line number="127" hits="0"/>
+						<line number="132" hits="0"/>
+						<line number="133" hits="0"/>
+						<line number="138" hits="0"/>
+						<line number="144" hits="0"/>
+						<line number="145" hits="0"/>
+						<line number="146" hits="0"/>
+						<line number="149" hits="0"/>
+						<line number="150" hits="0"/>
+						<line number="151" hits="0"/>
+						<line number="163" hits="0"/>
+						<line number="170" hits="0"/>
+					</lines>
+				</class>
+			</classes>
+		</package>
+	</packages>
+</coverage>

@@ -1,0 +1,215 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Coverage - cirno-84446c284e742071</title>
+  <link rel="stylesheet" type="text/css" href="bcov.css"/>
+</head>
+<body>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr><td class="title">Coverage Report</td></tr>
+  <tr><td class="ruler"><img src="glass.png" width="3" height="3" alt=""/></td></tr>
+  <tr>
+    <td width="100%">
+      <table cellpadding="1" border="0" width="100%">
+        <tr>
+          <td class="headerItem" width="20%">Command:</td>
+          <td class="headerValue" width="80%" colspan=6>cirno-84446c284e742071</td>
+        </tr>
+        <tr>
+          <td class="headerItem" width="20%">Date:</td>
+          <td class="headerValue" width="15%">2016-02-28 12:12:53</td>
+          <td width="5%"></td>
+          <td class="headerItem" width="20%">Instrumented&nbsp;lines:</td>
+          <td class="headerValue" width="10%">80</td>
+        </tr>
+        <tr>
+          <td class="headerItem" width="20%">Code&nbsp;covered:</td>
+          <td class="coverPerLeftLo" width="15%">0.0%</td>
+          <td width="5%"></td>
+          <td class="headerItem" width="20%">Executed&nbsp;lines:</td>
+          <td class="headerValue" width="10%">0</td>
+        </tr>
+      </table>
+    </td>
+  </tr>
+  <tr><td class="ruler"><img src="glass.png" width="3" height="3" alt=""/></td></tr>
+</table>
+<pre class="source">
+<span class="lineNum">    1</span><span class="lineNoCov">      0  /   2: #![feature(box_syntax, box_patterns)] </span>
+<span class="lineNum">    2</span><span class="lineNoCov">      0  /  60: #[derive(PartialEq, PartialOrd, Debug, Clone)] </span>
+<span class="lineNum">    3</span>              : pub enum Term </span>
+<span class="lineNum">    4</span>              : { </span>
+<span class="lineNum">    5</span><span class="lineNoCov">      0  /   3:     TString(String), </span>
+<span class="lineNum">    6</span><span class="lineNoCov">      0  /   3:     TBool(bool), </span>
+<span class="lineNum">    7</span><span class="lineNoCov">      0  /   5:     TConcat(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">    8</span><span class="lineNoCov">      0  /   7:     TCon(Box&lt;Term&gt;, Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">    9</span><span class="lineNoCov">      0  /   5:     TWhen(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   10</span><span class="lineNoCov">      0  /   5:     TUnless(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   11</span><span class="lineNoCov">      0  /   3:     TPrintLn(Box&lt;Term&gt;), </span>
+<span class="lineNum">   12</span>              :     TUnit, </span>
+<span class="lineNum">   13</span><span class="lineNoCov">      0  /   5:     TSeq(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   14</span><span class="lineNoCov">      0  /   3:     TShow(Box&lt;Term&gt;), </span>
+<span class="lineNum">   15</span><span class="lineNoCov">      0  /   5:     TAnd(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   16</span><span class="lineNoCov">      0  /   5:     TOr(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   17</span><span class="lineNoCov">      0  /   3:     TNot(Box&lt;Term&gt;), </span>
+<span class="lineNum">   18</span><span class="lineNoCov">      0  /   5:     TWhile(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   19</span>              :     TS, </span>
+<span class="lineNum">   20</span>              :     TK, </span>
+<span class="lineNum">   21</span>              :     TI, </span>
+<span class="lineNum">   22</span><span class="lineNoCov">      0  /   5:     TApp(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   23</span>              :     TNil, </span>
+<span class="lineNum">   24</span><span class="lineNoCov">      0  /   5:     TCons(Box&lt;Term&gt;, Box&lt;Term&gt;), </span>
+<span class="lineNum">   25</span><span class="lineNoCov">      0  /   3:     TIsNil(Box&lt;Term&gt;), </span>
+<span class="lineNum">   26</span><span class="lineNoCov">      0  /   3:     TFirst(Box&lt;Term&gt;), </span>
+<span class="lineNum">   27</span><span class="lineNoCov">      0  /   3:     TSecond(Box&lt;Term&gt;), </span>
+<span class="lineNum">   28</span>              :     TZero, </span>
+<span class="lineNum">   29</span><span class="lineNoCov">      0  /   3:     TInc(Box&lt;Term&gt;), </span>
+<span class="lineNum">   30</span><span class="lineNoCov">      0  /   3:     TIsZero(Box&lt;Term&gt;), </span>
+<span class="lineNum">   31</span><span class="lineNoCov">      0  /   3:     TPred(Box&lt;Term&gt;) </span>
+<span class="lineNum">   32</span>              : } </span>
+<span class="lineNum">   33</span>              : use Term::*; </span>
+<span class="lineNum">   34</span>              : pub trait VM { </span>
+<span class="lineNum">   35</span>              :     fn println(&amp;mut self, &amp;String); </span>
+<span class="lineNum">   36</span>              : } </span>
+<span class="lineNum">   37</span>              :  </span>
+<span class="lineNum">   38</span>              : pub fn is_value(tr : &amp; Term) -&gt; bool </span>
+<span class="lineNum">   39</span><span class="lineNoCov">      0  /   1: { </span>
+<span class="lineNum">   40</span>              :     match tr </span>
+<span class="lineNum">   41</span>              :     { </span>
+<span class="lineNum">   42</span><span class="lineNoCov">      0  /   1:         &amp;TS | &amp;TK | &amp;TI | &amp;TString(_) | &amp;TBool(_) | &amp;TUnit =&gt; true, </span>
+<span class="lineNum">   43</span><span class="lineNoCov">      0  /   1:         &amp;TApp(box TK, box ref x) =&gt; is_value(x), </span>
+<span class="lineNum">   44</span><span class="lineNoCov">      0  /   1:         &amp;TApp(box TS, box ref x) =&gt; is_value(x), </span>
+<span class="lineNum">   45</span>              :         &amp;TApp(box TApp(box TS, box ref l), box ref r) =&gt; </span>
+<span class="lineNum">   46</span><span class="lineNoCov">      0  /   2:             is_value(l) &amp;&amp; is_value(r), </span>
+<span class="lineNum">   47</span><span class="lineNoCov">      0  /   1:         &amp;TNil =&gt; true, </span>
+<span class="lineNum">   48</span><span class="lineNoCov">      0  /   2:         &amp;TCons(box ref l, box ref r) =&gt; is_value(l) &amp;&amp; is_value(r), </span>
+<span class="lineNum">   49</span><span class="lineNoCov">      0  /   1:         &amp;TZero =&gt; true, </span>
+<span class="lineNum">   50</span><span class="lineNoCov">      0  /   1:         &amp;TInc(box ref x) =&gt; is_value(x), </span>
+<span class="lineNum">   51</span><span class="lineNoCov">      0  /   1:         _ =&gt; false </span>
+<span class="lineNum">   52</span>              :     } </span>
+<span class="lineNum">   53</span><span class="lineNoCov">      0  /   2: } </span>
+<span class="lineNum">   54</span>              :  </span>
+<span class="lineNum">   55</span>              : pub fn eval&lt;ENV : VM&gt;(env : &amp;mut ENV, tr : &amp; Term) -&gt; Term </span>
+<span class="lineNum">   56</span><span class="lineNoCov">      0  /   1: { </span>
+<span class="lineNum">   57</span>              :     match tr </span>
+<span class="lineNum">   58</span>              :     { </span>
+<span class="lineNum">   59</span><span class="lineNoCov">      0  /   2:         _ if is_value(tr) =&gt; tr.clone(), </span>
+<span class="lineNum">   60</span>              :         &amp;TApp(box ref l, box ref r) =&gt; </span>
+<span class="lineNum">   61</span><span class="lineNoCov">      0  /   8:             match (eval(env, &amp;l), eval(env, &amp;r)) { </span>
+<span class="lineNum">   62</span><span class="lineNoCov">      0  /   1:                 (TApp(box TS, box TApp(x, y)), z) =&gt; </span>
+<span class="lineNum">   63</span><span class="lineNoCov">      0  /   4:                     eval(env, </span>
+<span class="lineNum">   64</span><span class="lineNoCov">      0  /   4:                          &amp;TApp(box TApp(x, box z.clone()), box TApp(y, box z))), </span>
+<span class="lineNum">   65</span>              :                 (TApp(box TK, box x), _) =&gt; x, </span>
+<span class="lineNum">   66</span>              :                 (TI, x) =&gt; x, </span>
+<span class="lineNum">   67</span><span class="lineNoCov">      0  /   1:                 (x, y) =&gt; { </span>
+<span class="lineNum">   68</span>              :                     debug_assert!(is_value(&amp;x) &amp;&amp; is_value(&amp;y)); </span>
+<span class="lineNum">   69</span><span class="lineNoCov">      0  /   2:                     TApp(box x, box y) }, </span>
+<span class="lineNum">   70</span>              :             }, </span>
+<span class="lineNum">   71</span>              :         &amp;TCon(box ref i, box ref t, box ref e) =&gt; </span>
+<span class="lineNum">   72</span><span class="lineNoCov">      0  /   3:             match eval(env, &amp;i) { </span>
+<span class="lineNum">   73</span><span class="lineNoCov">      0  /   3:                 TBool(true) =&gt; eval(env, t), </span>
+<span class="lineNum">   74</span><span class="lineNoCov">      0  /   2:                 TBool(false) =&gt; eval(env, e), </span>
+<span class="lineNum">   75</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">   76</span>              :             }, </span>
+<span class="lineNum">   77</span>              :         &amp;TPrintLn(box ref s) =&gt; </span>
+<span class="lineNum">   78</span><span class="lineNoCov">      0  /   4:             match eval(env, &amp;s) { </span>
+<span class="lineNum">   79</span><span class="lineNoCov">      0  /   2:                 TString(x) =&gt; { env.println(&amp;x); TUnit }, </span>
+<span class="lineNum">   80</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">   81</span>              :             }, </span>
+<span class="lineNum">   82</span>              :         &amp;TConcat(box ref l, box ref r) =&gt; </span>
+<span class="lineNum">   83</span><span class="lineNoCov">      0  /   5:             match (eval(env, l), eval(env, r)) { </span>
+<span class="lineNum">   84</span><span class="lineNoCov">      0  /   3:                 (TString(ls), TString(rs)) =&gt; TString(ls + &amp;rs), </span>
+<span class="lineNum">   85</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">   86</span>              :             }, </span>
+<span class="lineNum">   87</span><span class="lineNoCov">      0  /   1:         &amp;TSeq(box ref l, box ref r) =&gt; { eval(env, l); eval(env, r) }, </span>
+<span class="lineNum">   88</span>              :         &amp;TShow(box ref x) =&gt; </span>
+<span class="lineNum">   89</span><span class="lineNoCov">      0  /   4:             match eval(env, x) { </span>
+<span class="lineNum">   90</span>              :                 TString(x) =&gt; TString(x), </span>
+<span class="lineNum">   91</span><span class="lineNoCov">      0  /   3:                 TBool(true) =&gt; TString(String::from(&quot;true&quot;)), </span>
+<span class="lineNum">   92</span><span class="lineNoCov">      0  /   3:                 TBool(false) =&gt; TString(String::from(&quot;false&quot;)), </span>
+<span class="lineNum">   93</span><span class="lineNoCov">      0  /   2:                 TUnit =&gt; TString(String::from(&quot;unit&quot;)), </span>
+<span class="lineNum">   94</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">   95</span>              :             }, </span>
+<span class="lineNum">   96</span>              :         &amp;TWhen(box ref c, box ref act) =&gt; </span>
+<span class="lineNum">   97</span><span class="lineNoCov">      0  /   2:             eval(env, &amp;TCon(box c.clone(), box act.clone(), box TUnit)), </span>
+<span class="lineNum">   98</span>              :         &amp;TUnless(box ref c, box ref act) =&gt; </span>
+<span class="lineNum">   99</span><span class="lineNoCov">      0  /   2:             eval(env, &amp;TCon(box c.clone(), box TUnit, box act.clone())), </span>
+<span class="lineNum">  100</span>              :         &amp;TAnd(box ref l, box ref r) =&gt; </span>
+<span class="lineNum">  101</span><span class="lineNoCov">      0  /   2:             eval(env, &amp;TCon(box l.clone(), box r.clone(), box TBool(false))), </span>
+<span class="lineNum">  102</span>              :         &amp;TOr(box ref l, box ref r) =&gt; </span>
+<span class="lineNum">  103</span><span class="lineNoCov">      0  /   2:             eval(env, &amp;TCon(box l.clone(), box TBool(true), box r.clone())), </span>
+<span class="lineNum">  104</span>              :         &amp;TNot(box ref c) =&gt; </span>
+<span class="lineNum">  105</span><span class="lineNoCov">      0  /   2:             eval(env, &amp;TCon(box c.clone(), box TBool(false), box TBool(true))), </span>
+<span class="lineNum">  106</span>              :         &amp;TWhile(box ref c, box ref act) =&gt; </span>
+<span class="lineNum">  107</span><span class="lineNoCov">      0  /   4:             eval(env, </span>
+<span class="lineNum">  108</span><span class="lineNoCov">      0  /   4:                  &amp;TWhen(box c.clone(), </span>
+<span class="lineNum">  109</span><span class="lineNoCov">      0  /   5:                         box TSeq(box act.clone(), </span>
+<span class="lineNum">  110</span><span class="lineNoCov">      0  /   5:                                  box TWhile(box c.clone(), box act.clone() )))), </span>
+<span class="lineNum">  111</span>              :         &amp;TIsNil(box ref l) =&gt; </span>
+<span class="lineNum">  112</span><span class="lineNoCov">      0  /   2:             match eval(env, &amp;l) { </span>
+<span class="lineNum">  113</span>              :                 TNil =&gt; TBool(true), </span>
+<span class="lineNum">  114</span>              :                 _ =&gt; TBool(false) </span>
+<span class="lineNum">  115</span>              :             }, </span>
+<span class="lineNum">  116</span>              :         &amp;TFirst(box ref x) =&gt; </span>
+<span class="lineNum">  117</span><span class="lineNoCov">      0  /   2:             match eval(env, &amp;x) { </span>
+<span class="lineNum">  118</span><span class="lineNoCov">      0  /   2:                 TCons(box ref l, _) =&gt; l.clone(), </span>
+<span class="lineNum">  119</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">  120</span>              :             }, </span>
+<span class="lineNum">  121</span>              :         &amp;TSecond(box ref x) =&gt; </span>
+<span class="lineNum">  122</span><span class="lineNoCov">      0  /   2:             match eval(env, &amp;x) { </span>
+<span class="lineNum">  123</span><span class="lineNoCov">      0  /   2:                 TCons(_, box ref r) =&gt; r.clone(), </span>
+<span class="lineNum">  124</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">  125</span>              :             }, </span>
+<span class="lineNum">  126</span>              :         &amp;TIsZero(box ref x) =&gt; </span>
+<span class="lineNum">  127</span><span class="lineNoCov">      0  /   2:             match eval(env, &amp;x) { </span>
+<span class="lineNum">  128</span>              :                 TZero =&gt; TBool(true), </span>
+<span class="lineNum">  129</span>              :                 _ =&gt; TBool(false) </span>
+<span class="lineNum">  130</span>              :             }, </span>
+<span class="lineNum">  131</span>              :         &amp;TPred(box ref x) =&gt; </span>
+<span class="lineNum">  132</span><span class="lineNoCov">      0  /   4:             match eval(env, &amp;x) { </span>
+<span class="lineNum">  133</span><span class="lineNoCov">      0  /   2:                 TInc(box y) =&gt; y.clone(), </span>
+<span class="lineNum">  134</span>              :                 _ =&gt; unreachable!() </span>
+<span class="lineNum">  135</span>              :             }, </span>
+<span class="lineNum">  136</span>              :         _ =&gt; unreachable!() </span>
+<span class="lineNum">  137</span>              :     } </span>
+<span class="lineNum">  138</span><span class="lineNoCov">      0  /   2: } </span>
+<span class="lineNum">  139</span>              : use std::collections::LinkedList; </span>
+<span class="lineNum">  140</span>              : pub struct TestVM { </span>
+<span class="lineNum">  141</span>              :     output : LinkedList&lt;String&gt; </span>
+<span class="lineNum">  142</span>              : } </span>
+<span class="lineNum">  143</span>              : impl TestVM { </span>
+<span class="lineNum">  144</span><span class="lineNoCov">      0  /   1:     pub fn new() -&gt; TestVM { </span>
+<span class="lineNum">  145</span><span class="lineNoCov">      0  /   1:         TestVM { output : LinkedList::new() } </span>
+<span class="lineNum">  146</span><span class="lineNoCov">      0  /   2:     } </span>
+<span class="lineNum">  147</span>              : } </span>
+<span class="lineNum">  148</span>              : impl VM for TestVM { </span>
+<span class="lineNum">  149</span><span class="lineNoCov">      0  /   1:     fn println(&amp;mut self, x : &amp;String) { </span>
+<span class="lineNum">  150</span><span class="lineNoCov">      0  /   1:         self.output.push_back(x.clone()) </span>
+<span class="lineNum">  151</span><span class="lineNoCov">      0  /   2:     } </span>
+<span class="lineNum">  152</span>              : } </span>
+<span class="lineNum">  153</span>              :  </span>
+<span class="lineNum">  154</span>              : pub struct DefaultVM; </span>
+<span class="lineNum">  155</span>              :  </span>
+<span class="lineNum">  156</span>              : impl VM for DefaultVM { </span>
+<span class="lineNum">  157</span>              :     fn println(&amp;mut self, x : &amp;String) { </span>
+<span class="lineNum">  158</span>              :         println!(&quot;{}&quot;, x) </span>
+<span class="lineNum">  159</span>              :     } </span>
+<span class="lineNum">  160</span>              : } </span>
+<span class="lineNum">  161</span>              :  </span>
+<span class="lineNum">  162</span>              : #[test] </span>
+<span class="lineNum">  163</span><span class="lineNoCov">      0  /   1: fn test_conditional(){ </span>
+<span class="lineNum">  164</span>              :     assert_eq!( </span>
+<span class="lineNum">  165</span>              :         eval(&amp;mut TestVM::new(), </span>
+<span class="lineNum">  166</span>              :              &amp;TCon(box TBool(true), </span>
+<span class="lineNum">  167</span>              :                    box TString(String::from(&quot;Hello&quot;)), </span>
+<span class="lineNum">  168</span>              :                    box TString(String::from(&quot;World&quot;)))), </span>
+<span class="lineNum">  169</span>              :         TString(String::from(&quot;Hello&quot;))) </span>
+<span class="lineNum">  170</span><span class="lineNoCov">      0  /   5: } </span>
+</pre>
+<table width="100%" border="0" cellspacing="0" cellpadding="0">
+  <tr><td class="ruler"><img src="glass.png" width="3" height="3" alt=""/></td></tr>
+  <tr><td class="versionInfo">Generated by: <a href="http://simonkagstrom.github.com/kcov/index.html">Kcov</a> (based on <a href="http://bcov.sourceforge.net">bcov</a>)</td></tr>
+</table>
+<br/>
+</body>
+</html>
