@@ -28,7 +28,8 @@ pub enum Term
     TZero,
     TInc(Box<Term>),
     TIsZero(Box<Term>),
-    TPred(Box<Term>)
+    TPred(Box<Term>),
+    TFromi8(i8)
 }
 use Term::*;
 pub trait VM {
@@ -91,6 +92,12 @@ pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
                 TBool(true) => TString(String::from("true")),
                 TBool(false) => TString(String::from("false")),
                 TUnit => TString(String::from("unit")),
+                TZero => TString(String::from("O")),
+                TInc(box x) =>
+                    match eval(env, &TShow(box x)) {
+                        TString(str) => TString(String::from("(S ") + &str + ")"),
+                        _ => unreachable!()
+                    },
                 _ => unreachable!()
             },
         &TWhen(box ref c, box ref act) =>
@@ -107,7 +114,7 @@ pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
             eval(env,
                  &TWhen(box c.clone(),
                         box TSeq(box act.clone(),
-                                 box TWhile(box c.clone(), box act.clone() )))),
+                                 box TWhile(box c.clone(), box act.clone())))),
         &TIsNil(box ref l) =>
             match eval(env, &l) {
                 TNil => TBool(true),
@@ -133,18 +140,26 @@ pub fn eval<ENV : VM>(env : &mut ENV, tr : & Term) -> Term
                 TInc(box y) => y.clone(),
                 _ => unreachable!()
             },
+        &TFromi8(x) =>
+            match x {
+                0 => TZero,
+                _ => TInc(box eval(env, &TFromi8(x-1)))
+            },
         _ => unreachable!()
     }
 }
+
 use std::collections::LinkedList;
 pub struct TestVM {
     output : LinkedList<String>
 }
+
 impl TestVM {
     pub fn new() -> TestVM {
         TestVM { output : LinkedList::new() }
     }
 }
+
 impl VM for TestVM {
     fn println(&mut self, x : &String) {
         self.output.push_back(x.clone())
@@ -160,11 +175,63 @@ impl VM for DefaultVM {
 }
 
 #[test]
-fn test_conditional(){
+pub fn test_conditional(){
     assert_eq!(
         eval(&mut TestVM::new(),
              &TCon(box TBool(true),
                    box TString(String::from("Hello")),
                    box TString(String::from("World")))),
-        TString(String::from("Hello")))
+        TString(String::from("Hello")));
+}
+
+#[test]
+pub fn test_concat(){
+    assert_eq!(
+        eval(&mut TestVM::new(),
+             &TConcat(box TString(String::from("Hello ")),
+                      box TString(String::from("World")))),
+        TString(String::from("Hello World")));
+}
+
+#[test]
+pub fn test_isnil_nil(){
+    assert_eq!(
+        eval(&mut TestVM::new(),
+             &TIsNil(box TNil)),
+        TBool(true));
+}
+
+#[test]
+pub fn test_not_isnil_nonnil(){
+    assert_eq!(
+        eval(&mut TestVM::new(),
+             &TNot(box TIsNil(box TCons(box TNil, box TNil)))),
+        TBool(true));
+}
+
+#[test]
+pub fn test_or_is_zero_pred_inc(){
+    assert_eq!(
+        eval(&mut TestVM::new(),
+             &TOr(box TBool(false), box TIsZero(box TPred(box TInc(box TZero))))),
+        TBool(true));
+}
+
+#[test]
+pub fn test_unless_and_println_show_fromi(){
+    let mut x = TestVM::new();
+    eval(&mut x, &TUnless(box TAnd(box TBool(true), box TBool(false)),
+                          box TPrintLn(box TShow(box TFromi8(9)))));
+    let mut y = LinkedList::<String>::new();
+    y.push_back(String::from("(S (S (S (S (S (S (S (S (S O)))))))))"));
+    assert_eq!(x.output, y);
+}
+
+#[test]
+pub fn test_app_SKI(){
+    assert_eq!(eval(&mut TestVM::new(),
+                    &TApp(box TApp(box TK,
+                                   box TApp(box TI, box TApp(box TS, box TK))),
+                          box TS)),
+               TApp(box TS, box TK));
 }
