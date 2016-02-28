@@ -19,4 +19,4 @@ Inital Development day: ⑨/⑨/2015
 
 Click [trycirno] to play with it instantly!
 
-[trycirno]: <https://play.rust-lang.org/?gist=2b33ff9e91c49133af6f&version=nightly>
+[trycirno]: <https://play.rust-lang.org/?gist=956cb16dd65fbfa84b58&version=nightly>
