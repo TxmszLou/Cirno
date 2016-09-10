@@ -15,7 +15,7 @@ Below are the features you'll find in this language:
  8. No Comment
  9. Always Using All Your Resource In Order To Show Her Strength
 
-Inital Development day: ⑨/⑨/2015
+Inital Development day: ⑨/⑨/2016
 
 Click [trycirno] to play with it instantly!
 
